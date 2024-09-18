@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springserver.mapper.blackListMapper">
+    <select id="findAll" resultType="blackList">
+        select * from test.blacklist
+    </select>
+    <select id="findByUuid" resultType="blackList">
+        select * from test.blacklist where blackListUuid=#{uuid}
+    </select>
+    <select id="find" resultType="blackList">
+        select blackListUuid,phoneNumber,blackListName,reason,introducer,adder,startTime,endTime from test.blacklist bl
+        <where>
+            <if test="blackListName!='' ">
+                and blackListName like concat('%',#{blackListName},'%')
+            </if>
+            <if test="phoneNumber!=''">
+                and phoneNumber like concat('%',#{phoneNumber},'%')
+            </if>
+            <if test="introducer!=''">
+                and introducer like concat('%',#{phoneNumber},'%')
+            </if>
+            <if test="startTime!=''">
+                and DATE(startTime) <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime!='' ">
+                and DATE(endTime) <![CDATA[<=]]> #{endTime}
+            </if>
+        </where>
+     </select>
+    <insert id="AddOne" >
+        insert into test.blacklist (blackListUuid, phoneNumber, blackListName, reason, introducer, adder, startTime, endTime, updateTime, updater)
+        VALUES (#{blackListUuid},#{phoneNumber},#{blackListName},#{reason},#{introducer},#{adder},NOW(),#{endTime},#{updateTime},#{updater})
+    </insert>
+    <update id="UpdateBlackList">
+        UPDATE  test.blacklist SET   phoneNumber=#{phoneNumber},
+                                    blackListName=#{blackListName},
+                                    reason=#{reason},
+                                    introducer=#{introducer},
+                                    updater=#{updater},
+                                    startTime=#{startTime},
+                                    endTime=#{endTime},
+                                    updateTime=NOW()
+        where blackListUuid=#{blackListUuid}
+    </update>
+    <delete id="deleteBlackList">
+        delete from test.blacklist where blackListUuid=#{uuid}
+    </delete>
+</mapper>

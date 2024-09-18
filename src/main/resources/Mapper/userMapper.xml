@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springserver.mapper.userHandleMapper">
+    <select id="findById" resultType="User">
+        select * from test.testuser t
+        <where>
+            t.uuid like #{uuid}
+        </where>
+    </select>
+    <select id="findAll"  resultType="User">
+        select * from test.testuser
+    </select>
+    <select id="findByphone" resultType="User">
+        select * from test.testuser t
+        <where>
+            t.phone like #{phone}
+        </where>
+    </select>
+    <select id="findByName" resultType="User">
+        select * from test.testuser t where name like (concat('%',#{name},'%'))
+    </select>
+    <insert id="insert" >
+insert into test.testuser (uuid, name, age, phone) VALUES (#{uuid},#{name},#{age},#{phone})
+
+    </insert>
+    <update id="update">
+        UPDATE test.testuser SET uuid=#{user.uuid},age=#{user.age},phone=#{user.phone},name=#{user.name} where uuid=#{userUuid}
+    </update>
+    <delete id="delete">
+        delete from  test.testuser  t where t.uuid like #{uuid}
+    </delete>
+</mapper>
